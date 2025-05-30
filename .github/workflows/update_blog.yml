@@ -1,12 +1,11 @@
 name: Update Blog Posts
 
-
 on:
   push:
     branches:
       - main
   schedule:
-    - cron: '0 13 * * *'
+    - cron: '0 17 * * *'
 
 jobs:
   update_blog:
@@ -15,16 +14,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Push changes
-        run: |
-          git config --global user.name 'leedongkyu0407'
-          git config --global user.email 'use02012@gmail.com'
-          git push https://${{ secrets.GH_PAT }}@github.com/leedongkyu0407/velog.git
-          
-          # 깃허브 아이디
-          # 깃허브 이메일
-          # https://${{SecretKey}}@github.com/깃허브 아이디/레포지토리이름.git
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -37,3 +26,11 @@ jobs:
 
       - name: Run script
         run: python scripts/update_blog.py
+
+      - name: Push changes
+        run: |
+          git config --global user.name 'leedongkyu0407'
+          git config --global user.email 'use02012@gmail.com'
+          git add .
+          git commit -m "Update blog posts from Velog" || exit 0
+          git push https://${{ secrets.GH_PAT }}@github.com/leedongkyu0407/velog.git
