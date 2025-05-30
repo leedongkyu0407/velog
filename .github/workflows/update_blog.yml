@@ -10,10 +10,14 @@ on:
 jobs:
   update_blog:
     runs-on: ubuntu-latest
+    permissions:  # ✅ 권한 추가
+      contents: write
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4  # ✅ 최신 버전 사용
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Git
         run: |
@@ -21,7 +25,7 @@ jobs:
           git config --global user.email 'use02012@gmail.com'
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
@@ -36,4 +40,4 @@ jobs:
         run: |
           git add .
           git commit -m "Update blog posts from Velog" || exit 0
-          git push https://${{ secrets.GH_PAT }}@github.com/leedongkyu0407/velog.git
+          git push origin main
